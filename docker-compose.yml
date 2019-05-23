@@ -1,0 +1,25 @@
+version: '3'
+services:
+
+  db:
+    image: bitnami/mariadb
+    environment:
+      - MARIADB_ROOT_PASSWORD=mypass
+  
+  admin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - 8080:80
+    environment:
+      - PMA_HOST=db
+    links:
+      - db
+
+  app:
+    image: bitnami/codeigniter:3
+    ports:
+      - 80:8000
+    volumes:
+      - '.:/app'
+    links:
+      - db
